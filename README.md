@@ -18,7 +18,8 @@ python run_all.py        # ~2 min: download → grid → tests → EDA → valid
 5. [Results](#5-results)
 6. [What went wrong and how we fixed it](#6-what-went-wrong-and-how-we-fixed-it)
 7. [Limitations and next steps](#7-limitations-and-next-steps)
-8. [Repository layout](#8-repository-layout)
+8. [How AI was used](#8-how-ai-was-used)
+9. [Repository layout](#9-repository-layout)
 
 ## 1. Task and target
 
@@ -164,6 +165,10 @@ HGB was comparable there (0.2305) and slightly worse on validation, so the rule 
 | hour-of-day rate, 6 months | 0.610 | 0.172 | 0.1107 | 0.3909 | 6.3% |
 | last-30-day rate | 0.582 | 0.189 | 0.1084 | 0.3746 | 9.4% |
 
+All baselines were refit on exactly the same data as the final model (train + validation, last
+hour 2026-08-01 03:00 UTC). `src/audit_baselines.py` prints each baseline's fit window without
+reading test labels (log: `results/logs/audit_baselines.txt`).
+
 The two reference baselines were fixed in advance on validation (best log-loss and best ROC-AUC).
 Paired day-block bootstrap, 2,000 resamples, model − baseline:
 
@@ -228,7 +233,13 @@ to an AUC of 0.28 there, because its 30-day count includes the missing days. See
    baseline tables for each window were fit only on data before that window. An explicit assertion
    (`fit_rows`: last training label window ends before the evaluation window) now guards it, and the
    re-run reproduced identical numbers.
-5. **Smaller items:** pandas 3 parses timestamps as microseconds, which broke the leakage test until
+5. **Baseline audit before submission.** The question: were the baselines on test refit on
+   train + validation like the model, or left on train only? The suspicion came from the
+   6-month hour-of-day rate having the same mean forecast on validation and test (6.25% vs 6.27%) although July
+   had 8.0%. The audit shows they were refit. The 6-month window moved by 28 days: it dropped
+   03.01–31.01.2026 (7.9%) and added validation (8.0%), so its average barely changed.
+   No fix and no re-run of the test evaluation were needed, so `test_access.log` still shows a single test access.
+6. **Smaller items:** pandas 3 parses timestamps as microseconds, which broke the leakage test until
    we pinned nanoseconds. `pytest` and `pyarrow` were not installable in the build environment, so
    tests are plain functions (pytest-compatible) and the grid is stored as `csv.gz`.
 
@@ -244,7 +255,36 @@ to an AUC of 0.28 there, because its 30-day count includes the missing days. See
 * **Source dependence:** the official file stops on 07.09.2026 and has gaps. A production version would
   need a live feed and gap detection.
 
-## 8. Repository layout
+## 8. How AI was used
+
+The project was built with two separate Claude chats. One wrote the code and ran it. The second
+independently re-checked every conclusion against the data and formulated corrections. I made
+all decisions and confirmed each step before the next one started. Key places where the
+independent check caught or changed something:
+
+* **Duplicates.** Re-counting confirmed the 50% duplicated block. It also added the requirement
+  to assert that no duplicates remain by `(oblast, raion, hromada, started_at)`.
+* **The 6 September check.** The code chat said Kyiv's silence on 06.09 could not be verified from the
+  file. The reviewer pointed out that it can: alerts in other oblasts that day prove the day was
+  collected. The check is now in `step1_inspect.py`.
+* **Gap vs volunteer data.** The reviewer cross-checked the official and volunteer files day by day over
+  the whole history. As a result, the “≥ 24 h silence = gap” rule became a data-backed assertion
+  in code instead of an assumption.
+* **Validation window and test lock.** The reviewer required a separate validation window, all
+  decisions on validation only, and the test opened once. This led to `splits.py`, `unlock_test()`
+  and the access log. The code chat also admitted, and the README records, that the test's positive rate
+  had already been seen in step 2.
+* **Backtest audit.** The reviewer asked whether the backtest windows were in-sample, which would
+  invalidate the “HGB comparable” remark. The code showed they were out-of-sample. An explicit
+  assertion was added and the numbers reproduced exactly.
+* **Baseline audit.** The reviewer asked whether the test baselines were refit on train +
+  validation. They were (see section 6). The audit script is now part of `run_all.py`.
+
+Target definition (alert *start*, not “alert active”), the choice of test window B, the
+no-recalibration decision and the time budget (no text data) were my calls. Where the AI and I
+disagreed, the disagreement and its outcome are in this README.
+
+## 9. Repository layout
 
 ```
 run_all.py                one command: everything from scratch
@@ -258,6 +298,7 @@ src/step1_inspect.py      data audit
 src/step2_build_grid.py   grid + checks
 src/step3_eda.py          EDA (train only)
 src/step4_validate.py     baselines and models on validation + backtest
+src/audit_baselines.py    fit windows of every baseline (reads no test labels)
 src/step5_test.py         the one final test evaluation + tail
 tests/                    leakage and time-zone tests
 results/                  metrics tables, selected config, test access log, step logs

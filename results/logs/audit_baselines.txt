@@ -1,0 +1,20 @@
+
+VALIDATION run (fit on train): evaluation from 2026-07-04 04:00:00+00:00
+                  baseline                  fit_from        fit_to (last hour) fit_rate  mean_pred
+     constant (train rate) 2022-04-14 17:00:00+00:00 2026-07-04 03:00:00+00:00   0.0524     0.0524
+persistence  P(y | y[t-1]) 2022-04-14 17:00:00+00:00 2026-07-04 03:00:00+00:00   0.0524     0.0525
+ yesterday  P(y | y[t-24]) 2022-04-14 17:00:00+00:00 2026-07-04 03:00:00+00:00   0.0524     0.0523
+    hour-of-day rate (all) 2022-04-14 17:00:00+00:00 2026-07-04 03:00:00+00:00   0.0524     0.0524
+   hour-of-day rate (365D) 2025-07-04 04:00:00+00:00 2026-07-04 03:00:00+00:00   0.0595     0.0595
+   hour-of-day rate (182D) 2026-01-03 04:00:00+00:00 2026-07-04 03:00:00+00:00   0.0625     0.0625
+             last-30d rate                   rolling           t - 1h, per row        -     0.0661
+
+FINAL TEST run (fit on train + validation): evaluation from 2026-08-01 04:00:00+00:00
+                  baseline                  fit_from        fit_to (last hour) fit_rate  mean_pred
+     constant (train rate) 2022-04-14 17:00:00+00:00 2026-08-01 03:00:00+00:00   0.0529     0.0529
+persistence  P(y | y[t-1]) 2022-04-14 17:00:00+00:00 2026-08-01 03:00:00+00:00   0.0529     0.0534
+ yesterday  P(y | y[t-24]) 2022-04-14 17:00:00+00:00 2026-08-01 03:00:00+00:00   0.0529     0.0530
+    hour-of-day rate (all) 2022-04-14 17:00:00+00:00 2026-08-01 03:00:00+00:00   0.0529     0.0529
+   hour-of-day rate (365D) 2025-08-01 04:00:00+00:00 2026-08-01 03:00:00+00:00   0.0606     0.0606
+   hour-of-day rate (182D) 2026-01-31 04:00:00+00:00 2026-08-01 03:00:00+00:00   0.0627     0.0627
+             last-30d rate                   rolling           t - 1h, per row        -     0.0941

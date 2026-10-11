@@ -1,7 +1,8 @@
 """Reproduce everything from scratch with one command:  python run_all.py
 
 download (pinned commit) -> inspection -> hourly grid -> leakage & timezone tests
--> EDA -> baselines + models on validation -> ONE final test evaluation.
+-> EDA -> baselines + models on validation -> baseline fit-window audit
+-> ONE final test evaluation.
 Each step's output is saved to results/logs/.
 """
 import os
@@ -21,6 +22,7 @@ STEPS = [
     ("test_timezone", "tests/test_timezone.py", False),
     ("step3_eda", "src/step3_eda.py", False),
     ("step4_validate", "src/step4_validate.py", False),
+    ("audit_baselines", "src/audit_baselines.py", False),   # label-free: fit windows of baselines
     ("step5_test", "src/step5_test.py", True),     # the only step allowed to open the test
 ]
 
