@@ -1,0 +1,8 @@
+{
+  "model": "logreg",
+  "history": "all",
+  "features": "base+short+elapsed",
+  "rule": "min validation log-loss",
+  "best_baseline_logloss": "last-30d rate",
+  "best_baseline_auc": "hour-of-day rate (182D)"
+}

@@ -1,0 +1,196 @@
+
+========== STRUCTURE ==========
+(299275, 7)
+oblast         str
+raion          str
+hromada        str
+level          str
+started_at     str
+finished_at    str
+source         str
+dtype: object
+                 oblast               raion                                            hromada    level                 started_at                finished_at    source
+0      Vinnytska oblast                 NaN                                                NaN   oblast  2022-03-15 16:10:34+00:00  2022-03-15 16:50:07+00:00  official
+1    Zhytomyrska oblast                 NaN                                                NaN   oblast  2022-03-15 16:11:25+00:00  2022-03-15 16:54:23+00:00  official
+2      Cherkaska oblast      Umanskyi raion                       Umanska terytorialna hromada  hromada  2022-03-15 16:11:50+00:00  2022-03-15 16:54:47+00:00  official
+3    Mykolaivska oblast  Pervomaiskyi raion  m. Pervomaisk ta Pervomaiska terytorialna hromada  hromada  2022-03-15 16:14:46+00:00  2022-03-15 16:57:08+00:00  official
+4  Kirovohradska oblast                 NaN                                                NaN   oblast  2022-03-15 16:15:11+00:00  2022-03-15 16:54:52+00:00  official
+started_at: raw NaN=0, unparseable=0
+finished_at: raw NaN=0, unparseable=0
+
+========== DATE RANGE ==========
+started_at : 2022-03-15 16:10:34+00:00 -> 2026-09-07 05:28:22+00:00
+finished_at: 2022-03-15 16:50:07+00:00 -> 2026-09-07 05:39:33+00:00
+
+========== MISSING VALUES ==========
+oblast              0
+raion          130235
+hromada        262486
+level               0
+started_at          0
+finished_at         0
+source              0
+dtype: int64
+
+========== CATEGORICALS ==========
+level
+raion      132251
+oblast     130235
+hromada     36789
+Name: count, dtype: int64 
+
+source
+official    299275
+Name: count, dtype: int64 
+
+
+========== ROWS PER MONTH (ALL REGIONS) — last 14 months ==========
+level       hromada  oblast  raion
+started_at                        
+2025-08        1262    2234   4874
+2025-09        1144    1410   6936
+2025-10        1382    1430   6992
+2025-11        1398     328  14514
+2025-12        1372      48  14584
+2026-01        1240     113  14028
+2026-02         540      41   7341
+2026-03         800      39   8949
+2026-04         691      35   7883
+2026-05         645      58   9362
+2026-06         664      46   9296
+2026-07         637      59  10377
+2026-08         564      90   9982
+2026-09          88      22   1827
+
+========== KYIV CITY: MATCHING OBLAST NAMES ==========
+oblast
+Kyivska oblast    10951
+Kyiv City          4141
+Name: count, dtype: int64
+
+========== KYIV CITY: LEVEL / RAION / HROMADA ==========
+level
+oblast    4141
+Name: count, dtype: int64
+raion values: {nan: 4141}
+hromada values: {nan: 4141}
+
+========== KYIV CITY: ALERTS PER MONTH x LEVEL ==========
+level       oblast  total
+started_at               
+2022-03        206    206
+2022-04        144    144
+2022-05        152    152
+2022-06        110    110
+2022-07         66     66
+2022-08         86     86
+2022-09         50     50
+2022-10        110    110
+2022-11         32     32
+2022-12         54     54
+2023-01         34     34
+2023-02         54     54
+2023-03         72     72
+2023-04         18     18
+2023-05         68     68
+2023-06         54     54
+2023-07         46     46
+2023-08         90     90
+2023-09         34     34
+2023-10         12     12
+2023-11         46     46
+2023-12         74     74
+2024-01         70     70
+2024-02         32     32
+2024-03         78     78
+2024-04         50     50
+2024-05         76     76
+2024-06         70     70
+2024-07         94     94
+2024-08        124    124
+2024-09         78     78
+2024-10        108    108
+2024-11        126    126
+2024-12         98     98
+2025-01        122    122
+2025-02         86     86
+2025-03         70     70
+2025-04         94     94
+2025-05         76     76
+2025-06         68     68
+2025-07         98     98
+2025-08         94     94
+2025-09         92     92
+2025-10         92     92
+2025-11         82     82
+2025-12         48     48
+2026-01        113    113
+2026-02         41     41
+2026-03         39     39
+2026-04         35     35
+2026-05         58     58
+2026-06         46     46
+2026-07         59     59
+2026-08         90     90
+2026-09         22     22
+
+========== KYIV CITY: DATE RANGE ==========
+2022-03-15 16:19:20+00:00 -> 2026-09-05 23:22:48+00:00 | rows: 4141
+
+========== DURATION ANOMALIES (ALL) ==========
+count    299275.000000
+mean        134.750048
+std        2796.194136
+min           0.000000
+1%            5.266667
+50%          48.433333
+99%        1077.471000
+max      869836.466667
+dtype: float64
+<=0 min: 4 | <1 min: 783 | >24h: 1318 | finished_at NaN: 0
+
+========== DURATION ANOMALIES (KYIV CITY) ==========
+count    4141.000000
+mean       70.956931
+std        83.293774
+min         0.583333
+1%          5.956667
+50%        38.616667
+90%       162.250000
+99%       439.846667
+max       673.200000
+Name: dur_min, dtype: float64
+<=0 min: 0 | >6h: 74 | >24h: 0
+
+Shortest Kyiv City:
+          level                started_at               finished_at   dur_min    source
+283913  oblast 2026-07-24 09:47:30+00:00 2026-07-24 09:48:05+00:00  0.583333  official
+293701  oblast 2026-08-20 16:42:54+00:00 2026-08-20 16:43:39+00:00  0.750000  official
+28284   oblast 2023-08-29 23:15:26+00:00 2023-08-29 23:16:12+00:00  0.766667  official
+142195  oblast 2023-08-29 23:15:26+00:00 2023-08-29 23:16:12+00:00  0.766667  official
+110036  oblast 2026-01-13 00:10:03+00:00 2026-01-13 00:10:50+00:00  0.783333  official
+
+Longest Kyiv City:
+          level                started_at               finished_at     dur_min    source
+275867  oblast 2026-07-01 16:52:40+00:00 2026-07-02 04:05:52+00:00  673.200000  official
+98369   oblast 2025-11-28 20:56:01+00:00 2025-11-29 07:27:24+00:00  631.383333  official
+212280  oblast 2025-11-28 20:56:01+00:00 2025-11-29 07:27:24+00:00  631.383333  official
+57883   oblast 2024-11-07 19:38:00+00:00 2024-11-08 05:34:52+00:00  596.866667  official
+171794  oblast 2024-11-07 19:38:00+00:00 2024-11-08 05:34:52+00:00  596.866667  official
+
+========== DATA COVERAGE NEAR THE END (is Kyiv silence on 2026-09-06 real?) ==========
+(days in Kyiv local time)
+            all_alerts  oblasts_with_alerts  kyiv_city_alerts
+started_at                                                   
+2026-09-02         169                   18                 2
+2026-09-03         483                   21                 7
+2026-09-04         432                   17                 7
+2026-09-05         421                   20                 5
+2026-09-06         364                   14                 1
+2026-09-07          68                    8                 0
+UTC hours with >=1 alert start anywhere, Sep 5-7: 53 of 54
+
+========== KYIV CITY: OVERLAPS / DUPLICATES ==========
+exact duplicate rows: 1874
+duplicate started_at: 1874
+alerts starting before previous one finished: 1874

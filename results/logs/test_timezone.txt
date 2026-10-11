@@ -1,0 +1,1 @@
+PASS timezone: DST transitions handled via Europe/Kyiv

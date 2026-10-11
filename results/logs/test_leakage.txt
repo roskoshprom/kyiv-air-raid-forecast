@@ -1,0 +1,4 @@
+PASS truncation invariance: 750 times checked, 109 inside ongoing alerts
+PASS matches naive reference: 450 times checked
+PASS alert starting exactly at t
+PASS ongoing alert: end unknown

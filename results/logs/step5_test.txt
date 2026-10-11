@@ -1,0 +1,58 @@
+final model: {'model': 'logreg', 'history': 'all', 'features': 'base+short+elapsed', 'rule': 'min validation log-loss', 'best_baseline_logloss': 'last-30d rate', 'best_baseline_auc': 'hour-of-day rate (182D)'} | fit rows 37667, last fit hour 2026-08-01 03:00:00+00:00
+
+standardised logistic-regression coefficients:
+ log_since_end     -0.328
+active_now        -0.183
+log_starts_24h    -0.031
+h_sin1            -0.024
+h_sin2            -0.020
+no_end_yet         0.000
+starts_1h          0.029
+log_elapsed        0.029
+starts_3h          0.045
+starts_6h          0.059
+log_starts_7d      0.123
+h_cos1             0.136
+h_cos2             0.183
+log_starts_30d     0.185
+log_since_start    0.193
+
+TEST [2026-08-01 04:00, 2026-08-29 04:00): 672 h, 83 positive hours, rate 0.1235
+                                          ROC-AUC  PR-AUC   Brier  LogLoss  mean_pred  actual
+MODEL: logreg | all | base+short+elapsed   0.6932  0.2429  0.1057   0.3618     0.0839  0.1235
+constant (train rate)                      0.5000  0.1235  0.1132   0.4107     0.0529  0.1235
+persistence  P(y | y[t-1])                 0.5120  0.1266  0.1131   0.4097     0.0534  0.1235
+yesterday  P(y | y[t-24])                  0.5292  0.1326  0.1129   0.4077     0.0541  0.1235
+hour-of-day rate (all)                     0.5942  0.1634  0.1126   0.4058     0.0529  0.1235
+hour-of-day rate (365D)                    0.5922  0.1644  0.1113   0.3957     0.0606  0.1235
+hour-of-day rate (182D)                    0.6100  0.1721  0.1107   0.3909     0.0627  0.1235
+last-30d rate                              0.5817  0.1885  0.1084   0.3746     0.0941  0.1235
+
+Paired block bootstrap over days (model - baseline), 2000 resamples:
+  vs [last-30d rate]: logloss diff 95% CI [-0.0239 -0.0033], P(model better)=1.00 | ROC-AUC diff 95% CI [0.041 0.213], P(model better)=1.00
+  vs [hour-of-day rate (182D)]: logloss diff 95% CI [-0.0643 -0.0023], P(model better)=0.98 | ROC-AUC diff 95% CI [-0.036  0.174], P(model better)=0.91
+
+RELIABILITY on test (5 quantile bins):
+      mean_pred  observed    n
+bin                          
+0       0.0495    0.0741  135
+1       0.0631    0.0522  134
+2       0.0741    0.0522  134
+3       0.0929    0.1642  134
+4       0.1397    0.2741  135
+expected positives 56.4, observed 83, z = 3.55
+
+TAIL CAVEAT: history features are damaged by the 29.08-02.09 data gap (history_in_gap_7d in 111/111 hours); 'yesterday' baseline reads gap hours as 0 during the first 24h.
+
+TAIL [2026-09-02 14:00, 2026-09-07 05:00): 111 h, 21 positive hours, rate 0.1892
+                                          ROC-AUC  PR-AUC   Brier  LogLoss  mean_pred  actual
+MODEL: logreg | all | base+short+elapsed   0.6857  0.3581  0.1542   0.4918     0.1013  0.1892
+constant (train rate)                      0.5000  0.1892  0.1720   0.6003     0.0529  0.1892
+persistence  P(y | y[t-1])                 0.4421  0.1802  0.1720   0.6003     0.0539  0.1892
+yesterday  P(y | y[t-24])                  0.5302  0.2008  0.1710   0.5921     0.0554  0.1892
+hour-of-day rate (all)                     0.5034  0.2155  0.1720   0.6045     0.0532  0.1892
+hour-of-day rate (365D)                    0.5185  0.2252  0.1698   0.5870     0.0611  0.1892
+hour-of-day rate (182D)                    0.5368  0.2541  0.1686   0.5794     0.0630  0.1892
+last-30d rate                              0.2799  0.1321  0.1583   0.5054     0.1285  0.1892
+
+saved results/test_metrics.csv, results/tail_metrics.csv, figures/test_*.png

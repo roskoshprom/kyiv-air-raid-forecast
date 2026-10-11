@@ -1,0 +1,45 @@
+CLEANING: {'volunteer_check': {'days': 1636, 'missing_days': 3, 'min_region_ratio_outside_gaps': 0.5}, 'raw_rows': 299275, 'dedup_rows': 185430, 'region_rows_dedup': 2267, 'region_events_merged': 2263, 'merges': 4}
+
+COUNTRY-WIDE DATA GAPS (no alert starts anywhere for >= 24h):
+                  gap_start                   gap_end  hours
+0 2026-08-29 04:55:28+00:00 2026-09-02 13:48:04+00:00  104.9
+
+MERGED ALERTS (gap < 1 min):
+                    started_at               finished_at  n_merged
+165  2022-04-25 08:26:26+00:00 2022-04-25 09:05:52+00:00         2
+1835 2026-01-12 23:05:54+00:00 2026-01-13 00:10:50+00:00         2
+1988 2026-04-30 12:34:05+00:00 2026-04-30 13:12:18+00:00         2
+2255 2026-09-04 16:21:01+00:00 2026-09-04 17:13:14+00:00         2
+
+GRID: 39276 hours, 2022-03-15 17:00:00+00:00 -> 2026-09-07 04:00:00+00:00 (UTC), saved kyiv_hourly.csv.gz
+hourly continuity: True
+y=1 hours: 2228 | alert starts in grid: 2262 | hours with >1 start: 34
+flagged: label_in_gap 106 | history_in_gap_24h 129 | history_in_gap_7d 216 | history_in_gap_30d 216 | warmup_30d 720
+SPLIT CHECK (no test labels read): {'test_hours': 672, 'test_gap_flags': {'label_in_gap': 0, 'history_in_gap_24h': 0, 'history_in_gap_7d': 0, 'history_in_gap_30d': 0}, 'val_hours': 672}
+
+SHARE y=1 BY YEAR (development part only: < 2026-08-01 04:00:00+00:00, gap hours excluded):
+      hours  y_rate  eda_active_rate
+t                                   
+2022   6991  0.0705           0.1439
+2023   8760  0.0340           0.0782
+2024   8784  0.0564           0.1174
+2025   8760  0.0580           0.1418
+2026   5092  0.0646           0.1206
+
+HAND CHECK — alert started 2026-07-18 22:21:17+00:00, finished 2026-07-19 00:13:42+00:00 (local 01:21–03:13)
+neighbouring alerts:
+                     started_at               finished_at
+2121 2026-07-18 22:21:17+00:00 2026-07-19 00:13:42+00:00
+2122 2026-07-19 03:24:54+00:00 2026-07-19 03:47:48+00:00
+                           y  n_starts_next_1h  eda_active_next_1h  active_now  active_elapsed_min  since_last_start_h  since_last_end_h  starts_1h  starts_24h  starts_30d  hour_local
+t                                                                                                                                                                                      
+2026-07-18 19:00:00+00:00  0                 0                   0           0                0.00               20.43             19.90          0           2          47          22
+2026-07-18 20:00:00+00:00  0                 0                   0           0                0.00               21.43             20.90          0           2          47          23
+2026-07-18 21:00:00+00:00  0                 0                   0           0                0.00               22.43             21.90          0           2          47           0
+2026-07-18 22:00:00+00:00  1                 1                   1           0                0.00               23.43             22.90          0           1          47           1
+2026-07-18 23:00:00+00:00  0                 0                   1           1               38.72                0.65             23.90          1           1          48           2
+2026-07-19 00:00:00+00:00  0                 0                   1           1               98.72                1.65             24.90          0           1          48           3
+2026-07-19 01:00:00+00:00  0                 0                   0           0                0.00                2.65              0.77          0           1          48           4
+2026-07-19 02:00:00+00:00  0                 0                   0           0                0.00                3.65              1.77          0           1          48           5
+2026-07-19 03:00:00+00:00  1                 1                   1           0                0.00                4.65              2.77          0           1          48           6
+2026-07-19 04:00:00+00:00  0                 0                   0           0                0.00                0.58              0.20          1           2          49           7
